@@ -141,6 +141,7 @@ Value DecimalType::Modulo(const Value &left, const Value &right) const {
       return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<int64_t>())};
     case TypeId::DECIMAL:
       return {TypeId::DECIMAL, ValMod(left.value_.decimal_, right.GetAs<double>())};
+ 
     case TypeId::VARCHAR: {
       auto r_value = right.CastAs(TypeId::DECIMAL);
       return {TypeId::DECIMAL, ValMod(left.value_.decimal_, r_value.GetAs<double>())};
