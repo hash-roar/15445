@@ -260,6 +260,6 @@ docs/dev
 
 # Vagrant
 .vagrant
+.cache/
 build/
 .vscode/
-.cache/

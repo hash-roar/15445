@@ -12,6 +12,10 @@
 
 #pragma once
 
+#include <cstddef>
+#include <memory>
+#include <mutex>
+#include <vector>
 #include "buffer/buffer_pool_manager.h"
 #include "recovery/log_manager.h"
 #include "storage/disk/disk_manager.h"
@@ -86,5 +90,11 @@ class ParallelBufferPoolManager : public BufferPoolManager {
    * Flushes all the pages in the buffer pool to disk.
    */
   void FlushAllPgsImp() override;
+
+ protected:
+  std::vector<std::unique_ptr<BufferPoolManager>> managers_{};
+  std::mutex latch_{};
+  size_t start_index_{0};
+  size_t num_instances_;
 };
 }  // namespace bustub
