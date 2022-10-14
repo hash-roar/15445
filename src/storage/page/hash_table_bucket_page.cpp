@@ -41,7 +41,7 @@ bool HASH_TABLE_BUCKET_TYPE::Insert(KeyType key, ValueType value, KeyComparator 
       ins_idx = ins_idx == -1 ? i : ins_idx;
       continue;
     }
-    if (cmp(key, array_[i].first) == 0)  // duplicate key
+    if (cmp(key, array_[i].first) == 0 && value == array_[i].second)  // duplicate key
     {
       return false;
     }
@@ -54,8 +54,7 @@ bool HASH_TABLE_BUCKET_TYPE::Insert(KeyType key, ValueType value, KeyComparator 
     SetOccupied(ins_idx);
   }
   SetReadable(ins_idx);
-  array_[ins_idx].first = key;
-  array_[ins_idx].second = value;
+  array_[ins_idx] = MappingType(key, value);
 
   return true;
 }
@@ -66,7 +65,7 @@ bool HASH_TABLE_BUCKET_TYPE::Remove(KeyType key, ValueType value, KeyComparator 
     if (!IsReadable(i)) {
       continue;
     }
-    if (cmp(key, array_[i].first) == 0)  // duplicate key
+    if (cmp(key, array_[i].first) == 0 && value == array_[i].second)  // duplicate key
     {
       SetUnreadable(i);
       return true;

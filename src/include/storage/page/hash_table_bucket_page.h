@@ -12,7 +12,9 @@
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <utility>
 #include <vector>
 
@@ -137,6 +139,24 @@ class HashTableBucketPage {
    * Prints the bucket's occupancy information
    */
   void PrintBucket();
+
+  void Bzero() {
+    memset(array_, 0, sizeof(array_));
+    memset(occupied_, 0, sizeof(occupied_));
+    memset(readable_, 0, sizeof(readable_));
+  }
+
+  std::vector<MappingType> GetAll() {
+    std::vector<MappingType> result{};
+
+    for (size_t i = 0; i < BUCKET_ARRAY_SIZE; i++) {
+      if (IsReadable(i)) {
+        result.emplace_back(array_[i]);
+      }
+    }
+
+    return result;
+  }
 
  private:
   void SetUnreadable(uint32_t bucket_idx) {

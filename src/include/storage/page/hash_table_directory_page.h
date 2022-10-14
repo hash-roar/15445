@@ -79,7 +79,13 @@ class HashTableDirectoryPage {
    * @param bucket_idx the directory index for which to find the split image
    * @return the directory index of the split image
    **/
-  uint32_t GetSplitImageIndex(uint32_t bucket_idx);
+
+  uint32_t GetSplitImageIndex(uint32_t bucket_idx) {
+    // local_depth 001000  000111
+    //             000000  001111
+
+    return bucket_idx ^ (1 << (local_depths_[bucket_idx] - 1));
+  }
 
   /**
    * GetGlobalDepthMask - returns a mask of global_depth 1's and the rest 0's.
@@ -104,7 +110,7 @@ class HashTableDirectoryPage {
    * @param bucket_idx the index to use for looking up local depth
    * @return mask of local 1's and the rest 0's (with 1's from LSB upwards)
    */
-  uint32_t GetLocalDepthMask(uint32_t bucket_idx);
+  uint32_t GetLocalDepthMask(uint32_t bucket_idx) { return (1 << local_depths_[bucket_idx]) - 1; };
 
   /**
    * Get the global depth of the hash table directory

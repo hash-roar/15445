@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "buffer/buffer_pool_manager.h"
+#include "common/config.h"
 #include "concurrency/transaction.h"
 #include "container/hash/hash_function.h"
 #include "storage/page/hash_table_bucket_page.h"
@@ -120,6 +121,10 @@ class ExtendibleHashTable {
    * @return the bucket page_id corresponding to the input key
    */
   inline uint32_t KeyToPageId(KeyType key, HashTableDirectoryPage *dir_page);
+
+  inline HASH_TABLE_BUCKET_TYPE *KeyToBucket(KeyType key, HashTableDirectoryPage *dir_page) {
+    return FetchBucketPage(KeyToPageId(key, dir_page));
+  };
 
   /**
    * Fetches the directory page from the buffer pool manager.
