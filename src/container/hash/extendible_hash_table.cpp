@@ -221,7 +221,7 @@ bool HASH_TABLE_TYPE::Remove(Transaction *transaction, const KeyType &key, const
   if (bucket->IsEmpty()) {
     Merge(transaction, key, value);
   }
-  return false;
+  return success;
 }
 
 /*****************************************************************************
