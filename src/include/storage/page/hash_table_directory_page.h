@@ -83,7 +83,8 @@ class HashTableDirectoryPage {
   uint32_t GetSplitImageIndex(uint32_t bucket_idx) {
     // local_depth 001000  000111
     //             000000  001111
-
+    // 0 -> 1
+    // 10 -> 00
     return bucket_idx ^ (1 << (local_depths_[bucket_idx] - 1));
   }
 

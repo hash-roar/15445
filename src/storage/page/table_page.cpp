@@ -13,6 +13,7 @@
 #include "storage/page/table_page.h"
 
 #include <cassert>
+#include "common/logger.h"
 
 namespace bustub {
 
@@ -318,6 +319,7 @@ bool TablePage::GetFirstTupleRid(RID *first_rid) {
 }
 
 bool TablePage::GetNextTupleRid(const RID &cur_rid, RID *next_rid) {
+  LOG_DEBUG("cur rid pgid:%d,pg id:%d", cur_rid.GetPageId(), GetTablePageId());
   BUSTUB_ASSERT(cur_rid.GetPageId() == GetTablePageId(), "Wrong table!");
   // Find and return the first valid tuple after our current slot number.
   for (auto i = cur_rid.GetSlotNum() + 1; i < GetTupleCount(); ++i) {

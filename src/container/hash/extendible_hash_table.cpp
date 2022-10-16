@@ -77,7 +77,6 @@ HashTableDirectoryPage *HASH_TABLE_TYPE::FetchDirectoryPage() {
     assert(new_bucket_pg != nullptr);
 
     result->SetBucketPageId(0, new_bu_pg_id);
-    result->SetLocalDepth(0, 0);
     buffer_pool_manager_->UnpinPage(new_bu_pg_id, false);
     buffer_pool_manager_->UnpinPage(directory_page_id_, true);
   }
@@ -157,6 +156,7 @@ bool HASH_TABLE_TYPE::SplitInsert(Transaction *transaction, const KeyType &key, 
 
   // get all old data from  old bucket
   auto old_bucket_data = bucket->GetAll();
+  dir_page->IncrLocalDepth(bucket_idx);
   // create new image bucket
   page_id_t new_bucket_pgid;
   auto new_bk_pg = buffer_pool_manager_->NewPage(&new_bucket_pgid);
@@ -165,7 +165,6 @@ bool HASH_TABLE_TYPE::SplitInsert(Transaction *transaction, const KeyType &key, 
   auto new_bk_idx = dir_page->GetSplitImageIndex(bucket_idx);
   dir_page->SetBucketPageId(new_bk_idx, new_bucket_pgid);
   dir_page->SetLocalDepth(new_bk_idx, bucket_depth + 1);
-  dir_page->SetLocalDepth(bucket_idx, bucket_depth + 1);
 
   // insert data into two buckets
 

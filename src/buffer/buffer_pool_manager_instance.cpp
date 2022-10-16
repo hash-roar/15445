@@ -16,6 +16,7 @@
 #include <mutex>
 
 #include "common/config.h"
+#include "common/logger.h"
 #include "common/macros.h"
 #include "storage/page/page.h"
 
@@ -109,6 +110,7 @@ Page *BufferPoolManagerInstance::NewPgImp(page_id_t *page_id) {
     frame_id_t frame;
     replacer_->Victim(&frame);  // assert not false
     Page *free_page = &pages_[frame];
+    LOG_INFO("evict page:%d", free_page->GetPageId());
     page_table_.erase(free_page->GetPageId());
     if (free_page->IsDirty()) {
       disk_manager_->WritePage(free_page->GetPageId(), free_page->GetData());
