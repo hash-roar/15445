@@ -11,8 +11,10 @@
 //===----------------------------------------------------------------------===//
 
 #pragma once
+#include <memory>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "catalog/catalog.h"
 #include "execution/expressions/abstract_expression.h"
@@ -67,6 +69,7 @@ class UpdatePlanNode : public AbstractPlanNode {
   table_oid_t table_oid_;
   /** Map from column index -> update operation */
   const std::unordered_map<uint32_t, UpdateInfo> update_attrs_;
+  std::unique_ptr<AbstractPlanNode> child_plan_;
 };
 
 }  // namespace bustub
