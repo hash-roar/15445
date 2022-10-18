@@ -16,6 +16,7 @@
 
 #include "buffer/buffer_pool_manager.h"
 #include "catalog/catalog.h"
+#include "common/exception.h"
 #include "common/logger.h"
 #include "concurrency/transaction_manager.h"
 #include "execution/executor_context.h"
@@ -67,7 +68,8 @@ class ExecutionEngine {
       }
     } catch (Exception &e) {
       // TODO(student): handle exceptions
-      LOG_ERROR("%s", e.what());
+      // LOG_ERROR("%s", e.what());
+      throw Exception(ExceptionType::UNKNOWN_TYPE, "unexpected error");
       return false;
     }
 

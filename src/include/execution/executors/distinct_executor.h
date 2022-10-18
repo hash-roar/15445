@@ -13,10 +13,12 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 #include <utility>
 
 #include "execution/executors/abstract_executor.h"
 #include "execution/plans/distinct_plan.h"
+#include "storage/table/tuple.h"
 
 namespace bustub {
 
@@ -52,6 +54,9 @@ class DistinctExecutor : public AbstractExecutor {
   /** The distinct plan node to be executed */
   const DistinctPlanNode *plan_;
   /** The child executor from which tuples are obtained */
+  std::unordered_map<DistinctKey, Tuple> hash_{};
+  std::unordered_map<DistinctKey, Tuple>::const_iterator iter_{};
+
   std::unique_ptr<AbstractExecutor> child_executor_;
 };
 }  // namespace bustub

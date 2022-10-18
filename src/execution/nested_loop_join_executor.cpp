@@ -13,9 +13,11 @@
 #include "execution/executors/nested_loop_join_executor.h"
 #include <cassert>
 #include <utility>
+#include <vector>
 #include "catalog/schema.h"
 #include "common/rid.h"
 #include "storage/table/tuple.h"
+#include "type/value.h"
 
 namespace bustub {
 
@@ -51,7 +53,12 @@ bool NestedLoopJoinExecutor::Next(Tuple *tuple, RID *rid) {
       auto result = plan_->Predicate()->EvaluateJoin(&left_tuple, left_plan->OutputSchema(), &right_tuple,
                                                      right_plan->OutputSchema());
       if (result.GetAs<bool>()) {
-        *tuple = result.GetAs<Tuple>();
+        std::vector<Value> temp{};
+        for (const auto &col : GetOutputSchema()->GetColumns()) {
+          temp.emplace_back(col.GetExpr()->EvaluateJoin(&left_tuple, left_executor_->GetOutputSchema(), &right_tuple,
+                                                        right_executor_->GetOutputSchema()));
+        }
+        *tuple = Tuple(temp, GetOutputSchema());
         *rid = tuple->GetRid();
         return true;
       }

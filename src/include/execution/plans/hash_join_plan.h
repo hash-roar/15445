@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "execution/plans/abstract_plan.h"
+#include "type/value.h"
 
 namespace bustub {
 
@@ -65,4 +66,7 @@ class HashJoinPlanNode : public AbstractPlanNode {
   const AbstractExpression *right_key_expression_;
 };
 
+
+
 }  // namespace bustub
+

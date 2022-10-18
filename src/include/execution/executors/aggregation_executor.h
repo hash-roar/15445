@@ -208,6 +208,8 @@ class AggregationExecutor : public AbstractExecutor {
   const AggregationPlanNode *plan_;
   /** The child executor that produces tuples over which the aggregation is computed */
   std::unique_ptr<AbstractExecutor> child_;
+  SimpleAggregationHashTable hash_;
+  SimpleAggregationHashTable::Iterator iter_;
   /** Simple aggregation hash table */
   // TODO(Student): Uncomment SimpleAggregationHashTable aht_;
   /** Simple aggregation hash table iterator */
